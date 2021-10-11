@@ -1,5 +1,4 @@
 import Popper from 'element-ui/src/utils/vue-popper';
-import debounce from 'throttle-debounce/debounce';
 import { addClass, removeClass, on, off } from 'element-ui/src/utils/dom';
 import { generateId } from 'element-ui/src/utils/util';
 import Vue from 'vue';
@@ -71,8 +70,6 @@ export default {
         return this.node;
       }
     }).$mount();
-
-    this.debounceClose = debounce(200, () => this.handleClosePopper());
   },
 
   render(h) {
@@ -82,7 +79,7 @@ export default {
           name={ this.transition }
           onAfterLeave={ this.doDestroy }>
           <div
-            onMouseleave={ () => { this.setExpectedState(false); this.debounceClose(); } }
+            onMouseleave={ () => { this.setExpectedState(false); this.handleClosePopper(); } }
             onMouseenter= { () => { this.setExpectedState(true); } }
             ref="popper"
             role="tooltip"
@@ -154,7 +151,7 @@ export default {
 
     hide() {
       this.setExpectedState(false);
-      this.debounceClose();
+      this.handleClosePopper();
     },
     handleFocus() {
       this.focusing = true;
